@@ -1,0 +1,1 @@
+ansible-inventory -i test.aws_ec2.yml --list | grep "public_ip_address" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"

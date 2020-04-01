@@ -1,0 +1,26 @@
+- name: Test ec2
+  hosts: local
+  connection: local
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Create new Ubuntu 18.04 instance
+      ec2:
+        key_name: ansible_testing
+        instance_type: t2.micro
+        image: ami-0fc20dd1da406780b 
+        group: ssh_only
+        wait: yes
+        count: 1
+        region: us-east-2
+      register: ec2
+
+    - name: Wait for SSH to come up
+      wait_for:
+        host: "{{ item['public_ip'] }}"
+        port: 22
+        state: started
+      with_items: "{{ ec2.instances }}"
+      #    - name: attempt to debug
+      #      debug:
+      #        msg: "{{ ec2 }}"

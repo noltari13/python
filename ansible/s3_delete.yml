@@ -1,0 +1,11 @@
+- name: Test s3
+  hosts: local
+  connection: local
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Delete bucket
+      s3_bucket:
+        name: mys3bucket24323
+        state: absent
+        force: yes
